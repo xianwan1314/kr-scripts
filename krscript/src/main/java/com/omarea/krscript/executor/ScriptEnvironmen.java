@@ -257,21 +257,7 @@ public class ScriptEnvironmen {
     /**
      *
      */
-    private static ArrayList<String> getVariables(HashMap<String, String> params) {
-        ArrayList<String> envp = new ArrayList<>();
 
-        if (params != null) {
-            for (String key : params.keySet()) {
-                String value = params.get(key);
-                if (value == null) {
-                    value = "";
-                }
-                envp.add(key + "='" + value.replaceAll("'", "'\\\\''") + "'");
-            }
-        }
-
-        return envp;
-    }
 
     private static String getExecuteScript(Context context, String script, String tag) {
         if (!inited) {
@@ -347,11 +333,14 @@ public class ScriptEnvironmen {
             params.put("PAGE_WORK_FILE", "");
         }
 
-        ArrayList<String> envp = getVariables(params);
         StringBuilder envpCmds = new StringBuilder();
-        if (!envp.isEmpty()) {
-            for (String param : envp) {
-                envpCmds.append("export ").append(param).append("\n");
+        if (!params.isEmpty()) {
+            for (String param : params.keySet()) {
+                String value = params.get(param);
+                if (value == null) {
+                    value = "";
+                }
+                envpCmds.append("export ").append(param).append("='").append(value.replaceAll("'", "'\\\\''")).append("'\n");
             }
         }
         try {
