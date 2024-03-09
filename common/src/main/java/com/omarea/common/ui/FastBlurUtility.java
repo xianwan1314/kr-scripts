@@ -94,7 +94,7 @@ public class FastBlurUtility {
         if (bkg == null) {
             return null;
         }
-        float radius = 8; //模糊程度
+        float radius = 5; //模糊程度
 
         Bitmap overlay = fastBlur(small(bkg), (int) radius);
         return big(getDimmedBitmap(overlay));
@@ -135,7 +135,7 @@ public class FastBlurUtility {
         Bitmap bitmap = sentBitmap.copy(sentBitmap.getConfig(), true);
 
         if (radius < 1) {
-            return (null);
+            return null;
         }
 
         int w = bitmap.getWidth();
