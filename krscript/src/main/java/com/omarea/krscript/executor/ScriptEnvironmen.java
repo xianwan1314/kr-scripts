@@ -6,6 +6,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Build;
 import android.os.Environment;
+import android.util.Log;
 
 import com.omarea.common.shared.FileWrite;
 import com.omarea.common.shell.KeepShell;
@@ -124,7 +125,7 @@ public class ScriptEnvironmen {
             }
             return result.toString();
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            Log.e("md5", e.toString());
         }
 
         return "";
@@ -228,48 +229,28 @@ public class ScriptEnvironmen {
      */
     private static HashMap<String, String> getEnvironment(Context context) {
         HashMap<String, String> params = new HashMap<>();
-
         params.put("TOOLKIT", TOOKIT_DIR);
-
         params.put("START_DIR", getStartPath(context));
-        // params.put("EXECUTOR_PATH", environmentPath);
         params.put("TEMP_DIR", context.getCacheDir().getAbsolutePath());
-
         FileOwner fileOwner = new FileOwner(context);
         int androidUid = fileOwner.getUserId();
         params.put("ANDROID_UID", String.valueOf(androidUid));
-
         try {
-            // @ https://blog.csdn.net/Gaugamela/article/details/78689580
             params.put("APP_USER_ID", fileOwner.getFileOwner());
-            // params.put("APP_UID", "" + android.os.Process.myPid());
-            // params.put("APP_PID", "" + android.os.Process.myPid());
-            // params.put("APP_TID", "" + android.os.Process.myTid());
         } catch (Exception ignored) {
         }
-
         params.put("ANDROID_SDK", String.valueOf(Build.VERSION.SDK_INT));
-        // params.put("ROOT_PERMISSION", rooted ? "granted" : "denied");
         params.put("ROOT_PERMISSION", rooted ? "true" : "false");
         params.put("SDCARD_PATH", Environment.getExternalStorageDirectory().getAbsolutePath());
         String busyboxPath = FileWrite.INSTANCE.getPrivateFilePath(context, "busybox");
-        if (new File(FileWrite.INSTANCE.getPrivateFilePath(context, "busybox")).exists()) {
-            params.put("BUSYBOX", busyboxPath);
-        } else {
-            params.put("BUSYBOX", "busybox");
-        }
+        params.put("BUSYBOX", (new File(FileWrite.INSTANCE.getPrivateFilePath(context, "busybox")).exists()) ? busyboxPath:"busybox");
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             params.put("PACKAGE_NAME", context.getPackageName());
             params.put("PACKAGE_VERSION_NAME", packageInfo.versionName);
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
-                params.put("PACKAGE_VERSION_CODE", String.valueOf(packageInfo.getLongVersionCode()));
-            } else {
-                params.put("PACKAGE_VERSION_CODE", String.valueOf(packageInfo.versionCode));
-            }
+            params.put("PACKAGE_VERSION_CODE", String.valueOf((Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode(): packageInfo.versionCode));
         } catch (Exception ignored) {
         }
-
         return params;
     }
 
