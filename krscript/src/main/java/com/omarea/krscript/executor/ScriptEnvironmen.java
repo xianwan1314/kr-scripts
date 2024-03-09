@@ -22,7 +22,6 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class ScriptEnvironmen {
@@ -199,7 +198,7 @@ public class ScriptEnvironmen {
             stringBuilder.append("export PAGE_WORK_DIR=''\n");
             stringBuilder.append("export PAGE_WORK_DIR=''\n");
         }
-        stringBuilder.append("\n\n");
+        stringBuilder.append("\n");
         stringBuilder.append(environmentPath).append(" \"").append(path).append("\"");
         return (shellTranslation != null) ? shellTranslation.resolveRow(privateShell.doCmdSync(stringBuilder.toString())) : privateShell.doCmdSync(stringBuilder.toString());
     }
