@@ -80,8 +80,6 @@ public class ShellExecutor {
                 shellHandlerBase.sendMessage(shellHandlerBase.obtainMessage(ShellHandlerBase.EVENT_START, "shell@android:\n"));
                 shellHandlerBase.sendMessage(shellHandlerBase.obtainMessage(ShellHandlerBase.EVENT_START, cmds + "\n\n"));
                 shellHandlerBase.onStart(forceStopRunnable);
-                dataOutputStream.writeBytes("sleep 0.1;\n");
-
                 ScriptEnvironmen.executeShell(context, dataOutputStream, cmds, params, nodeInfo, sessionTag);
             } catch (Exception ex) {
                 process.destroy();
