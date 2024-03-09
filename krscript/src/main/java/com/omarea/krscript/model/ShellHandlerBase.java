@@ -80,14 +80,14 @@ public abstract class ShellHandlerBase extends Handler {
     protected void onReaderMsg(Object msg) {
         if (msg != null) {
             String log = msg.toString().trim();
+
             if (Pattern.matches("^progress:\\[[\\-0-9\\\\]+/[0-9\\\\]+]$", log)) {
                 String[] values = log.substring("progress:[".length(), log.indexOf("]")).split("/");
-                int start = Integer.parseInt(values[0]);
-                int total = Integer.parseInt(values[1]);
-                onProgress(start, total);
+                onProgress(Integer.parseInt(values[0]), Integer.parseInt(values[1]));
             } else {
                 onReader(msg);
             }
+
         }
     }
 

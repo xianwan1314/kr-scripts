@@ -1,5 +1,7 @@
 package com.omarea.krscript.downloader;
 
+import android.util.Log;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.security.MessageDigest;
@@ -22,7 +24,7 @@ public class FileMD5 {
             }
             in.close();
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.e("getmd5", e.toString());
             return null;
         }
         return bytesToHexString(digest.digest());
