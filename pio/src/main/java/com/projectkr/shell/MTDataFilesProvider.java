@@ -1,4 +1,4 @@
-package com.mio.kitchen;
+package com.projectkr.shell;
 
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
