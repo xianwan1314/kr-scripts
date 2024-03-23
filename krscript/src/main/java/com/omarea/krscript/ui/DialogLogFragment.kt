@@ -46,10 +46,6 @@ class DialogLogFragment : androidx.fragment.app.DialogFragment() {
     private var themeResId: Int = 0
     private lateinit var currentView: View
 
-    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return Dialog(activity!!, if (themeResId != 0) themeResId else R.style.kr_full_screen_dialog_light)
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
