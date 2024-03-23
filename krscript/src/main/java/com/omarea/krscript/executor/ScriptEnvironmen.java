@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Environment;
 import android.util.Log;
 
@@ -238,7 +239,7 @@ public class ScriptEnvironmen {
             params.put("APP_USER_ID", fileOwner.getFileOwner());
         } catch (Exception ignored) {
         }
-        params.put("ANDROID_SDK", String.valueOf(Build.VERSION.SDK_INT));
+        params.put("ANDROID_SDK", String.valueOf(VERSION.SDK_INT));
         params.put("ROOT_PERMISSION", rooted ? "true" : "false");
         params.put("SDCARD_PATH", Environment.getExternalStorageDirectory().getAbsolutePath());
         String busyboxPath = FileWrite.INSTANCE.getPrivateFilePath(context, "busybox");
@@ -247,7 +248,7 @@ public class ScriptEnvironmen {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             params.put("PACKAGE_NAME", context.getPackageName());
             params.put("PACKAGE_VERSION_NAME", packageInfo.versionName);
-            params.put("PACKAGE_VERSION_CODE", String.valueOf((Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode(): packageInfo.versionCode));
+            params.put("PACKAGE_VERSION_CODE", String.valueOf((VERSION.SDK_INT >= Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode(): packageInfo.versionCode));
         } catch (Exception ignored) {
         }
         return params;
