@@ -200,11 +200,7 @@ public class WebViewInjector {
                     public void onFileSelected(@Nullable String path) {
                         try {
                             final JSONObject message = new JSONObject();
-                            if (path == null || path.isEmpty()) {
-                                message.put("absPath", null);
-                            } else {
-                                message.put("absPath", path);
-                            }
+                            message.put("absPath", (path == null || path.isEmpty())? null : path);
                             webView.post(new Runnable() {
                                 @Override
                                 public void run() {
