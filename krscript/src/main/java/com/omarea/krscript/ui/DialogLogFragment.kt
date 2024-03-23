@@ -7,6 +7,7 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
+import android.text.Layout
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
