@@ -138,7 +138,6 @@ class PageConfigReader {
                         } else if (group != null) {
                             when (parser.name) {
                                 "page" -> {
-                                    tagEndInPage()
                                     if (page != null) {
                                         group.children.add(page)
                                     }
@@ -176,7 +175,6 @@ class PageConfigReader {
                         } else {
                             when (parser.name) {
                                 "page" -> {
-                                    tagEndInPage()
                                     if (page != null) {
                                         mainList.add(page)
                                     }
@@ -324,8 +322,7 @@ class PageConfigReader {
         }
     }
 
-    private fun tagEndInPage() {
-    }
+
 
     private fun tagEndInAction(action: ActionNode?) {
         if (action != null) {
