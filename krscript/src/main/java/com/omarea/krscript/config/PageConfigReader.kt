@@ -166,7 +166,7 @@ class PageConfigReader {
                                     picker = null
                                 }
                                 "text" -> {
-                                    tagEndInText()
+
                                     if (text != null) {
                                         group.children.add(text)
                                     }
@@ -204,7 +204,6 @@ class PageConfigReader {
                                     picker = null
                                 }
                                 "text" -> {
-                                    tagEndInText()
                                     if (text != null) {
                                         mainList.add(text)
                                     }
@@ -707,8 +706,7 @@ class PageConfigReader {
         }
     }
 
-    private fun tagEndInText() {
-    }
+
 
     private var vitualRootNode: NodeInfoBase? = null
     private fun executeResultRoot(context: Context, scriptIn: String): String {
