@@ -132,12 +132,15 @@ class ActionPageOnline : AppCompatActivity() {
                     val taskAliasId = if (extras.containsKey("taskId")) extras.getString("taskId") else UUID.randomUUID().toString()
 
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && checkSelfPermission(Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                        downloader.saveTaskStatus(taskAliasId, 0)
+                        if (taskAliasId != null) {
+                            downloader.saveTaskStatus(taskAliasId, 0)
+                        }
 
                         requestPermissions(arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE), 2)
                         DialogHelper.helpInfo(this, "", getString(R.string.kr_write_external_storage))
                     } else {
-                        val downloadId = downloader.downloadBySystem(url, null, null, taskAliasId)
+                        val downloadId =
+                            taskAliasId?.let { downloader.downloadBySystem(url, null, null, it) }
                         if (downloadId != null) {
                             kr_download_url.text = url
                             val autoClose = extras.containsKey("autoClose") && extras.getBoolean("autoClose")
@@ -145,7 +148,9 @@ class ActionPageOnline : AppCompatActivity() {
                             downloader.saveTaskStatus(taskAliasId, 0)
                             watchDownloadProgress(downloadId, autoClose, taskAliasId)
                         } else {
-                            downloader.saveTaskStatus(taskAliasId, -1)
+                            if (taskAliasId != null) {
+                                downloader.saveTaskStatus(taskAliasId, -1)
+                            }
                         }
                     }
                 }
@@ -304,13 +309,13 @@ class ActionPageOnline : AppCompatActivity() {
         kr_download_name_copy.setOnClickListener {
             val myClipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val myClip = ClipData.newPlainText("text", kr_download_name.text.toString())
-            myClipboard.primaryClip = myClip
+            myClipboard.setPrimaryClip(myClip)
             Toast.makeText(this@ActionPageOnline, getString(R.string.copy_success), Toast.LENGTH_SHORT).show()
         }
         kr_download_url_copy.setOnClickListener {
             val myClipboard: ClipboardManager = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
             val myClip = ClipData.newPlainText("text", kr_download_url.text.toString())
-            myClipboard.primaryClip = myClip
+            myClipboard.setPrimaryClip(myClip)
             Toast.makeText(this@ActionPageOnline, getString(R.string.copy_success), Toast.LENGTH_SHORT).show()
         }
 

@@ -91,9 +91,8 @@ class DialogLogFragment : androidx.fragment.app.DialogFragment() {
 
         btn_copy.setOnClickListener {
             try {
-                val myClipboard: ClipboardManager = this.context!!.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-                val myClip: ClipData = ClipData.newPlainText("text", shell_output.text.toString())
-                myClipboard.primaryClip = myClip
+                val myClipboard: ClipboardManager = this.requireContext().getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
+                myClipboard.setPrimaryClip(ClipData.newPlainText("text", shell_output.text.toString()))
                 Toast.makeText(context, getString(R.string.copy_success), Toast.LENGTH_SHORT).show()
             } catch (ex: Exception) {
                 Toast.makeText(context, getString(R.string.copy_fail), Toast.LENGTH_SHORT).show()
