@@ -1,5 +1,5 @@
 package com.omarea.krscript.ui
-
+import android.app.Dialog
 import android.content.ClipData
 import android.content.ClipboardManager
 import android.content.Context
@@ -7,7 +7,6 @@ import android.content.DialogInterface
 import android.os.Build
 import android.os.Bundle
 import android.os.Message
-import android.text.Layout
 import android.text.SpannableString
 import android.view.LayoutInflater
 import android.view.View
@@ -45,6 +44,9 @@ class DialogLogFragment : androidx.fragment.app.DialogFragment() {
     private var params: HashMap<String, String>? = null
     private var themeResId: Int = 0
     private lateinit var currentView: View
+    override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
+        return Dialog(requireActivity(), if (themeResId != 0) themeResId else R.style.kr_full_screen_dialog_light)
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
