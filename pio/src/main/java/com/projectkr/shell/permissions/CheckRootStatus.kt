@@ -20,7 +20,7 @@ class CheckRootStatus(var context: Context, private var next: Runnable? = null) 
     fun forceGetRoot() {
         if (lastCheckResult) {
             if (next != null) {
-                myHandler.post(next)
+                next?.let { myHandler.post(it) }
             }
         } else {
             var completed = false
@@ -34,7 +34,7 @@ class CheckRootStatus(var context: Context, private var next: Runnable? = null) 
 
                 if (lastCheckResult) {
                     if (next != null) {
-                        myHandler.post(next)
+                        next?.let { myHandler.post(it) }
                     }
                 } else {
                     myHandler.post {
@@ -52,7 +52,7 @@ class CheckRootStatus(var context: Context, private var next: Runnable? = null) 
                             }),
                             if (!context.resources.getBoolean(R.bool.force_root)) {
                                 DialogHelper.DialogButton(context.getString(R.string.btn_skip), {if (next != null) {
-                                    myHandler.post(next)
+                                    next?.let { myHandler.post(it) }
                                 }})
                             } else {null}
                         )

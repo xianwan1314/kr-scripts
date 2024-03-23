@@ -90,11 +90,7 @@ class AsynSuShellUnit(var handler: Handler) {
         writer.write("exit\nexit\nexit\n")
         writer.flush()
         Thread(Runnable {
-            if (process!!.waitFor() == 0) {
-                handler.sendMessage(handler.obtainMessage(10, true))
-            } else {
-                handler.sendMessage(handler.obtainMessage(10, false))
-            }
+            handler.sendMessage(handler.obtainMessage(10, (process!!.waitFor() == 0)))
             destroy()
         }).start()
     }

@@ -29,11 +29,8 @@ public class KrScriptConfig {
         if (configInfo == null) {
             configInfo = new HashMap<>();
             configInfo.put(EXECUTOR_CORE, EXECUTOR_CORE_DEFAULT);
-            String PAGE_LIST_CONFIG_DEFAULT = "file:///android_asset/kr-script/pages/more.xml";
-            configInfo.put(PAGE_LIST_CONFIG, PAGE_LIST_CONFIG_DEFAULT);
-            String FAVORITE_CONFIG_DEFAULT = "file:///android_asset/kr-script/pages/favorites.xml";
-            configInfo.put(FAVORITE_CONFIG, FAVORITE_CONFIG_DEFAULT);
-
+            configInfo.put(PAGE_LIST_CONFIG, "file:///android_asset/kr-script/pages/more.xml");
+            configInfo.put(FAVORITE_CONFIG, "file:///android_asset/kr-script/pages/favorites.xml");
             configInfo.put(TOOLKIT_DIR, TOOLKIT_DIR_DEFAULT);
             configInfo.put(BEFORE_START_SH, BEFORE_START_SH_DEFAULT);
 
@@ -50,8 +47,8 @@ public class KrScriptConfig {
                     String rowText = row.trim();
                     if (!rowText.startsWith("#") && rowText.contains("=")) {
                         int separator = rowText.indexOf("=");
-                        String key = rowText.substring(0, separator).trim();
-                        String value = rowText.substring(separator + 2, rowText.length() - 1).trim();
+                        String key = rowText.substring(0, separator);
+                        String value = rowText.substring(separator + 2, rowText.length() - 1);
                         configInfo.remove(key);
                         configInfo.put(key, value);
                     }

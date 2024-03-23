@@ -108,8 +108,7 @@ class SplashActivity : Activity() {
             actionPage.putExtras(this.intent)
             startActivity(actionPage)
         } else {
-            val home = Intent(this.applicationContext, MainActivity::class.java)
-            startActivity(home)
+            startActivity(Intent(this.applicationContext, MainActivity::class.java))
         }
         finish()
     }
@@ -128,7 +127,7 @@ class SplashActivity : Activity() {
                     }
                     notificationMessageRows.add(log)
                     logView.text =
-                        notificationMessageRows.joinToString("\n", if (someIgnored) "……\n" else "").trim()
+                        notificationMessageRows.joinToString("\n", if (someIgnored) "\n" else "").trim()
                 }
             }
         }
@@ -146,12 +145,9 @@ class SplashActivity : Activity() {
                 val process = if (CheckRootStatus.lastCheckResult) ShellExecutor.getSuperUserRuntime() else ShellExecutor.getRuntime()
                 if (process != null) {
                     val outputStream = DataOutputStream(process.outputStream)
-
                     ScriptEnvironmen.executeShell(context, outputStream, config.beforeStartSh, params, null, "pio-splash")
-
                     StreamReadThread(process.inputStream.bufferedReader(), updateLogViewHandler).start()
                     StreamReadThread(process.errorStream.bufferedReader(), updateLogViewHandler).start()
-
                     process.waitFor()
                     updateLogViewHandler.onExit()
                 } else {
