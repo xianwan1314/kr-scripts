@@ -315,12 +315,10 @@ public class ScriptEnvironmen {
         }
         StringBuilder envpCmds = new StringBuilder();
         if (!params.isEmpty()) {
-            for (String param : params.keySet()) {
-                String value = params.get(param);
-                if (value == null) {
-                    continue;
+            for (Map.Entry<String, String> m: params.entrySet()) {
+                if (!m.getValue().isEmpty()) {
+                    envpCmds.append("export ").append(m.getKey()).append("='").append(m.getValue().replaceAll("'", "'\\\\''")).append("'\n");
                 }
-                envpCmds.append("export ").append(param).append("='").append(value.replaceAll("'", "'\\\\''")).append("'\n");
             }
         }
         try {
