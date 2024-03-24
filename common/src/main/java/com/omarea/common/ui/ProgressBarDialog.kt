@@ -2,7 +2,6 @@ package com.omarea.common.ui
 
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.view.LayoutInflater
 import android.widget.TextView
 import com.omarea.common.R
 
@@ -41,7 +40,7 @@ open class ProgressBarDialog(private var context: Activity, private var uniqueId
             textView!!.text = text
         } else {
             hideDialog()
-            val dialog = LayoutInflater.from(context).inflate(R.layout.dialog_loading, null)
+            val dialog = context.layoutInflater.inflate(R.layout.dialog_loading, null)
             textView = (dialog.findViewById(R.id.dialog_text)!!)
             textView!!.text = text
             alert = DialogHelper.customDialog(context, dialog, false)
