@@ -691,15 +691,13 @@ class PageConfigReader {
             if (pickerNode.getState == null) {
                 pickerNode.getState = ""
             } else {
-                val shellResult = executeResultRoot(context, "" + pickerNode.getState)
-                pickerNode.value = shellResult
+                pickerNode.value = executeResultRoot(context, "" + pickerNode.getState)
             }
             if (pickerNode.setState == null) {
                 pickerNode.setState = ""
             }
         }
     }
-
 
 
     private var vitualRootNode: NodeInfoBase? = null
