@@ -108,7 +108,7 @@ public class ScriptEnvironmen {
             for (String key : environment.keySet()) {
                 String value = environment.get(key);
                 if (value == null) {
-                    value = "";
+                    continue;
                 }
                 envShell = envShell.replace("$({" + key + "})", value);
             }
@@ -243,13 +243,6 @@ public class ScriptEnvironmen {
         }
         return value;
     }*/
-
-
-
-
-    /**
-     *
-     */
 
 
     private static String getExecuteScript(Context context, String script, String tag) {
