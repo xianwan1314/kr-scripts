@@ -45,6 +45,34 @@ public class ScriptEnvironmen {
 
         init(context, configSpf.getString("executor", "kr-script/executor.sh"), configSpf.getString("toolkitDir", "kr-script/toolkit"));
     }
+    /**
+     * 获取框架的环境变量
+     */
+    private static HashMap<String, String> getEnvironment(Context context) {
+        HashMap<String, String> params = new HashMap<>();
+        params.put("TOOLKIT", TOOKIT_DIR);
+        params.put("START_DIR", getStartPath(context));
+        params.put("TEMP_DIR", context.getCacheDir().getAbsolutePath());
+        FileOwner fileOwner = new FileOwner(context);
+        int androidUid = fileOwner.getUserId();
+        params.put("ANDROID_UID", String.valueOf(androidUid));
+        try {
+            params.put("APP_USER_ID", fileOwner.getFileOwner());
+        } catch (Exception ignored) {
+        }
+        params.put("ANDROID_SDK", String.valueOf(VERSION.SDK_INT));
+        params.put("ROOT_PERMISSION", rooted ? "true" : "false");
+        params.put("SDCARD_PATH", Environment.getExternalStorageDirectory().getAbsolutePath());
+        params.put("BUSYBOX", (new File(FileWrite.INSTANCE.getPrivateFilePath(context, "busybox")).exists()) ? FileWrite.INSTANCE.getPrivateFilePath(context, "busybox"):"busybox");
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            params.put("PACKAGE_NAME", context.getPackageName());
+            params.put("PACKAGE_VERSION_NAME", packageInfo.versionName);
+            params.put("PACKAGE_VERSION_CODE", String.valueOf((VERSION.SDK_INT >= Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode(): packageInfo.versionCode));
+        } catch (Exception ignored) {
+        }
+        return params;
+    }
 
     /**
      * 初始化执行器
@@ -92,12 +120,10 @@ public class ScriptEnvironmen {
             if (inited) {
                 environmentPath = outputPathAbs;
             }
-
             SharedPreferences.Editor configSpf = context.getSharedPreferences("kr-script-config", Context.MODE_PRIVATE).edit();
             configSpf.putString("executor", executor);
             configSpf.putString("toolkitDir", toolkitDir);
             configSpf.apply();
-
             privateShell = rooted ? KeepShellPublic.INSTANCE.getDefaultInstance() : new KeepShell(rooted);
 
             return inited;
@@ -218,35 +244,8 @@ public class ScriptEnvironmen {
         return value;
     }*/
 
-    /**
-     * 获取框架的环境变量
-     */
-    private static HashMap<String, String> getEnvironment(Context context) {
-        HashMap<String, String> params = new HashMap<>();
-        params.put("TOOLKIT", TOOKIT_DIR);
-        params.put("START_DIR", getStartPath(context));
-        params.put("TEMP_DIR", context.getCacheDir().getAbsolutePath());
-        FileOwner fileOwner = new FileOwner(context);
-        int androidUid = fileOwner.getUserId();
-        params.put("ANDROID_UID", String.valueOf(androidUid));
-        try {
-            params.put("APP_USER_ID", fileOwner.getFileOwner());
-        } catch (Exception ignored) {
-        }
-        params.put("ANDROID_SDK", String.valueOf(VERSION.SDK_INT));
-        params.put("ROOT_PERMISSION", rooted ? "true" : "false");
-        params.put("SDCARD_PATH", Environment.getExternalStorageDirectory().getAbsolutePath());
-        String busyboxPath = FileWrite.INSTANCE.getPrivateFilePath(context, "busybox");
-        params.put("BUSYBOX", (new File(FileWrite.INSTANCE.getPrivateFilePath(context, "busybox")).exists()) ? busyboxPath:"busybox");
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            params.put("PACKAGE_NAME", context.getPackageName());
-            params.put("PACKAGE_VERSION_NAME", packageInfo.versionName);
-            params.put("PACKAGE_VERSION_CODE", String.valueOf((VERSION.SDK_INT >= Build.VERSION_CODES.P) ? packageInfo.getLongVersionCode(): packageInfo.versionCode));
-        } catch (Exception ignored) {
-        }
-        return params;
-    }
+
+
 
     /**
      *
@@ -335,7 +334,7 @@ public class ScriptEnvironmen {
             String cache = getExecuteScript(context, cmds, tag);
             dataOutputStream.write(envpCmds.toString().getBytes(StandardCharsets.UTF_8));
             dataOutputStream.write(cache.getBytes(StandardCharsets.UTF_8));
-            dataOutputStream.writeBytes("\nexit\nexit\n");
+            dataOutputStream.writeBytes("\nexit\nexit");
             dataOutputStream.flush();
             File file = new File(cache);
             if (file.exists() && file.isFile() && cache.endsWith(".sh")) {
