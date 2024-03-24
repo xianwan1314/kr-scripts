@@ -1,9 +1,7 @@
 package com.omarea.common.shell;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
-
 public class ShellExecutor {
     private static final String extraEnvPath = "";
     private static String defaultEnvPath = ""; // /sbin:/system/sbin:/system/bin:/system/xbin:/odm/bin:/vendor/bin:/vendor/xbin
@@ -13,19 +11,7 @@ public class ShellExecutor {
         if (extraEnvPath != null && !extraEnvPath.isEmpty()) {
             if (defaultEnvPath.isEmpty()) {
                 try {
-                    Process process = Runtime.getRuntime().exec("sh");
-                    OutputStream outputStream = process.getOutputStream();
-                    outputStream.write("echo $PATH".getBytes());
-                    outputStream.flush();
-                    outputStream.close();
-
-                    InputStream inputStream = process.getInputStream();
-                    byte[] cache = new byte[16384];
-                    int length = inputStream.read(cache);
-                    inputStream.close();
-                    process.destroy();
-
-                    String path = new String(cache, 0, length).trim();
+                    String path = System.getProperty("PATH");
                     if (!path.isEmpty()) {
                         defaultEnvPath = path;
                     } else {
