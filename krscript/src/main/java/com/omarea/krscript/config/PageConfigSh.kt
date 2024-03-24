@@ -36,8 +36,7 @@ class PageConfigSh(private var activity: Activity, private var pageConfigSh: Str
                     noReadPermission()
                 }
             } else if (result.startsWith("<?xml") && result.endsWith(">")) {
-                val inputStream = ByteArrayInputStream(result.toByteArray())
-                items = PageConfigReader(activity, inputStream).readConfigXml()
+                items = PageConfigReader(activity, ByteArrayInputStream(result.toByteArray())).readConfigXml()
             } else if (result.isNotEmpty()) {
                 pageConfigShError(result)
             }
