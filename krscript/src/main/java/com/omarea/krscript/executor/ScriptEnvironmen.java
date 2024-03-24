@@ -140,12 +140,11 @@ public class ScriptEnvironmen {
             return outputPath;
         }
 
-        byte[] bytes = ((script.startsWith("#!/") ? "":"#!/system/bin/sh\n\n") + script)
+        if (FileWrite.INSTANCE.writePrivateFile(((script.startsWith("#!/") ? "":"#!/system/bin/sh\n\n") + script)
                 .replaceAll("\r\n", "\n")
                 .replaceAll("\r\t", "\t")
                 .replaceAll("\r", "\n")
-                .getBytes();
-        if (FileWrite.INSTANCE.writePrivateFile(bytes, outputPath, context)) {
+                .getBytes(), outputPath, context)) {
             return FileWrite.INSTANCE.getPrivateFilePath(context, outputPath);
         }
         return "";
@@ -193,11 +192,6 @@ public class ScriptEnvironmen {
                 stringBuilder.append("export PAGE_WORK_DIR='").append(parentPageConfigDir).append("'\n");
                 stringBuilder.append("export PAGE_WORK_FILE='").append(currentPageConfigPath).append("'\n");
             }
-        } else {
-            stringBuilder.append("export PAGE_CONFIG_DIR=''\n");
-            stringBuilder.append("export PAGE_CONFIG_FILE=''\n");
-            stringBuilder.append("export PAGE_WORK_DIR=''\n");
-            stringBuilder.append("export PAGE_WORK_DIR=''\n");
         }
         stringBuilder.append("\n");
         stringBuilder.append(environmentPath).append(" \"").append(path).append("\"");
@@ -326,13 +320,7 @@ public class ScriptEnvironmen {
                 params.put("PAGE_WORK_DIR", parentPageConfigDir);
                 params.put("PAGE_WORK_FILE", currentPageConfigPath);
             }
-        } else {
-            params.put("PAGE_CONFIG_DIR", "");
-            params.put("PAGE_CONFIG_FILE", "");
-            params.put("PAGE_WORK_DIR", "");
-            params.put("PAGE_WORK_FILE", "");
         }
-
         StringBuilder envpCmds = new StringBuilder();
         if (!params.isEmpty()) {
             for (String param : params.keySet()) {
@@ -357,4 +345,3 @@ public class ScriptEnvironmen {
         }
     }
 }
-
