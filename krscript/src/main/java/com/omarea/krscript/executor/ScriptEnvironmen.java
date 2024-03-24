@@ -325,7 +325,7 @@ public class ScriptEnvironmen {
             for (String param : params.keySet()) {
                 String value = params.get(param);
                 if (value == null) {
-                    value = "";
+                    continue;
                 }
                 envpCmds.append("export ").append(param).append("='").append(value.replaceAll("'", "'\\\\''")).append("'\n");
             }
