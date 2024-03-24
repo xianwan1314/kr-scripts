@@ -570,11 +570,9 @@ class PageConfigReader {
     private fun resourceNode(parser: XmlPullParser) {
         for (i in 0 until parser.attributeCount) {
             if (parser.getAttributeName(i) == "file") {
-                val file = parser.getAttributeValue(i).trim()
-                ExtractAssets(context).extractResource(file)
+                ExtractAssets(context).extractResource(parser.getAttributeValue(i).trim())
             } else if (parser.getAttributeName(i) == "dir") {
-                val file = parser.getAttributeValue(i).trim()
-                ExtractAssets(context).extractResources(file)
+                ExtractAssets(context).extractResources(parser.getAttributeValue(i).trim())
             }
         }
     }
@@ -634,7 +632,6 @@ class PageConfigReader {
                     }
                     "align" -> {
                         when (attrValue) {
-
                             "center" -> textRow.align = Layout.Alignment.ALIGN_CENTER
                             "normal" -> textRow.align = Layout.Alignment.ALIGN_NORMAL
                         }
