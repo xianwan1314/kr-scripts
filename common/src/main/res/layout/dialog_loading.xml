@@ -5,7 +5,7 @@
     <LinearLayout
         android:layout_marginHorizontal="16dp"
         android:layout_marginVertical="12dp"
-        android:background="@drawable/confirm_dialog_bg"
+        android:background="@drawable/btn_bg_active_large"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:keepScreenOn="true"
