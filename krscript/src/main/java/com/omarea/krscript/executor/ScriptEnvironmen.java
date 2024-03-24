@@ -24,6 +24,7 @@ import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Map;
 
 public class ScriptEnvironmen {
     private static final String ASSETS_FILE = "file:///android_asset/";
@@ -105,13 +106,12 @@ public class ScriptEnvironmen {
             String envShell = new String(bytes, Charset.defaultCharset()).replaceAll("\r", "");
 
             HashMap<String, String> environment = getEnvironment(context);
-            for (String key : environment.keySet()) {
-                String value = environment.get(key);
-                if (value == null) {
-                    continue;
+            for (Map.Entry<String, String> m: environment.entrySet()) {
+                if (!m.getValue().isEmpty()) {
+                    envShell = envShell.replace("$({" + m.getKey() + "})", m.getValue());
                 }
-                envShell = envShell.replace("$({" + key + "})", value);
             }
+
             String outputPathAbs = FileWrite.INSTANCE.getPrivateFilePath(context, fileName);
             envShell = envShell.replace("$({EXECUTOR_PATH})", outputPathAbs);
 
