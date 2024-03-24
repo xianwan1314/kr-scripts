@@ -66,8 +66,7 @@ public class ExtractAssets {
             String[] files = context.getAssets().list(dir);
             if (files != null && files.length > 0) {
                 for (String file : files) {
-                    String relativePath = dir + "/" + file;
-                    extractResources(relativePath);
+                    extractResources(dir + "/" + file);
                 }
                 String outputDir = getExtractPath(dir);
                 extractHisotry.put(dir, outputDir);
