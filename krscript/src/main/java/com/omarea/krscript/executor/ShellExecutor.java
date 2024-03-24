@@ -41,34 +41,31 @@ public class ShellExecutor {
                 onExit.run();
             }
         } else {
-            final Runnable forceStopRunnable = (nodeInfo.getInterruptable() || nodeInfo.getShell().equals(RunnableNode.shellModeBgTask))? (new Runnable() {
-                @Override
-                public void run() {
+            final Runnable forceStopRunnable = (nodeInfo.getInterruptable() || nodeInfo.getShell().equals(RunnableNode.shellModeBgTask))? (() -> {
 
-                    killProcess(context);
+                killProcess(context);
 
-                    try {
-                        process.getInputStream().close();
-                    } catch (Exception ignored) {}
-                    try {
-                        process.getOutputStream().close();
-                    } catch (Exception ignored) {}
-                    try {
-                        process.getErrorStream().close();
-                    } catch (Exception ignored) {}
+                try {
+                    process.getInputStream().close();
+                } catch (Exception ignored) {}
+                try {
+                    process.getOutputStream().close();
+                } catch (Exception ignored) {}
+                try {
+                    process.getErrorStream().close();
+                } catch (Exception ignored) {}
 
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        try {
-                            process.destroyForcibly();
-                        } catch (Exception ex) {
-                            Log.e("KrScriptError", ex.getMessage());
-                        }
-                    } else {
-                        try {
-                            process.destroy();
-                        } catch (Exception ex) {
-                            Log.e("KrScriptError", ex.getMessage());
-                        }
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    try {
+                        process.destroyForcibly();
+                    } catch (Exception ex) {
+                        Log.e("KrScriptError", ex.getMessage());
+                    }
+                } else {
+                    try {
+                        process.destroy();
+                    } catch (Exception ex) {
+                        Log.e("KrScriptError", ex.getMessage());
                     }
                 }
             }) : null;
