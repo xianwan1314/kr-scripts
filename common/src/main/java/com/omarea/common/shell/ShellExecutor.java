@@ -30,7 +30,6 @@ public class ShellExecutor {
 
     private static Process getProcess(String run) throws IOException {
         String env = getEnvPath();
-        Runtime runtime = Runtime.getRuntime();
         /*
         // 部分机型会有Aborted错误
         if (env != null) {
@@ -39,7 +38,7 @@ public class ShellExecutor {
             });
         }
         */
-        Process process = runtime.exec(run);
+        Process process = Runtime.getRuntime().exec(run);
         if (env != null) {
             OutputStream outputStream = process.getOutputStream();
             outputStream.write("export ".getBytes());
